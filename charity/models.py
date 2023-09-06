@@ -9,6 +9,9 @@ from accounts.models import CustomUser
 class Category(models.Model):
     name = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.name
+
 
 class Institution(models.Model):
     CHOICES = [
@@ -21,6 +24,11 @@ class Institution(models.Model):
     description = models.TextField()
     type = models.IntegerField(choices=CHOICES, default=1)
     categories = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return f'{self.name}({self.get_type_display()})'
+
+
 
 
 class Donation(models.Model):
