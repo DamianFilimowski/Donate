@@ -18,13 +18,13 @@ class AdminCustomUserChangeForm(UserChangeForm):
 
 
 class AddUserModelForm(forms.ModelForm):
-    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput)
-    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput, label='Hasło')
+    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput, label='Powtórz Hasło')
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username']
-        labels = {'first_name': 'imie'}
+        fields = ['first_name', 'last_name', 'email']
+        labels = {'first_name': 'Imię', 'last_name': 'Nazwisko', 'email': 'Email'}
 
     def clean(self):
         cleaned_data = super().clean()
