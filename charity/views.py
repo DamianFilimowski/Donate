@@ -18,11 +18,23 @@ class LandingPageView(View):
         return render(request, 'index.html', context)
 
 
-class AddDonationView(View):
+class AddDonationStep1View(View):
     def get(self, request):
-        return render(request, 'charity/form.html')
+        categories = Category.objects.all()
+        return render(request, 'charity/form_step1.html', {'categories': categories})
+
+    def post(self, request):
+        categories = request.POST.getlist('categories')
+        print(categories)
+        return render(request, 'charity/form_step2.html', categories)
+
+
 
 
 class ConfirmationView(View):
     def get(self, request):
         return render(request, 'charity/form-confirmation.html')
+
+
+
+
