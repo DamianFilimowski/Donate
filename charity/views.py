@@ -57,6 +57,30 @@ class AddDonationStep3View(View):
         foundation = request.POST.get('foundation')
         print(foundation)
         request.session['foundation'] = foundation
+        return redirect('charity:add_donation_step4')
+
+
+class AddDonationStep4View(View):
+    def get(self, request):
+        return render(request, 'charity/form_step4.html')
+
+    def post(self, request):
+        if request.POST.get('return') == 'yes':
+            return redirect('charity:add_donation_step3')
+        address = request.POST.get('address')
+        request.session['address'] = address
+        city = request.POST.get('city')
+        request.session['city'] = city
+        postcode = request.POST.get('postcode')
+        request.session['postcode'] = postcode
+        data = request.POST.get('data')
+        request.session['data'] = data
+        time = request.POST.get('time')
+        request.session['time'] = time
+        phone = request.POST.get('phone')
+        request.session['phone'] = phone
+        more_info = request.POST.get('more_info')
+        request.session['more_info'] = more_info
         return redirect('charity:add_donation')
 
 
