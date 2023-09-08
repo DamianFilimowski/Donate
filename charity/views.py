@@ -35,6 +35,8 @@ class AddDonationStep2View(View):
         return render(request, 'charity/form_step2.html')
 
     def post(self, request):
+        if request.POST.get('return') == 'yes':
+            return redirect('charity:add_donation')
         bags = request.POST.get('bags')
         request.session['bags'] = bags
         return redirect('charity:add_donation_step3')
@@ -49,8 +51,9 @@ class AddDonationStep3View(View):
         return render(request, 'charity/form_step3.html',
                       {'message': 'Brak fundacji spełniającej kryteria'})
 
-
     def post(self, request):
+        if request.POST.get('return') == 'yes':
+            return redirect('charity:add_donation_step2')
         foundation = request.POST.get('foundation')
         print(foundation)
         request.session['foundation'] = foundation

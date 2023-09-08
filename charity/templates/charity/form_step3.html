@@ -19,7 +19,7 @@
     {% endfor %}
         {% if message %}<span style="font-size:20px">{{ message }}</span>{% endif %}
             <div class="form-group form-group--buttons">
-              <button onclick="{% url 'charity:add_donation_step2' %}" class="btn prev-step">Wstecz</button>
+              <button name='return' value="yes" class="btn prev-step">Wstecz</button>
               <button type="submit" class="btn next-step">Dalej</button>
             </div>
 
