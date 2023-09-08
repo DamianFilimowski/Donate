@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from charity.models import *
+from charity.utils import filter_foundations
 
 
 # Create your views here.
@@ -36,8 +37,24 @@ class AddDonationStep2View(View):
     def post(self, request):
         bags = request.POST.get('bags')
         request.session['bags'] = bags
-        return redirect('charity:add_donation')
+        return redirect('charity:add_donation_step3')
 
+
+class AddDonationStep3View(View):
+    def get(self, request):
+        categories = request.session.get('categories')
+        foundations = filter_foundations(categories)
+        if foundations:
+            return render(request, 'charity/form_step3.html', {'foundations': foundations})
+        return render(request, 'charity/form_step3.html',
+                      {'message': 'Brak fundacji spełniającej kryteria'})
+
+
+    def post(self, request):
+        foundation = request.POST.get('foundation')
+        print(foundation)
+        request.session['foundation'] = foundation
+        return redirect('charity:add_donation')
 
 
 
