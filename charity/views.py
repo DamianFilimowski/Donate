@@ -1,5 +1,5 @@
 from django.db.models import Sum
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from charity.models import *
@@ -25,8 +25,18 @@ class AddDonationStep1View(View):
 
     def post(self, request):
         categories = request.POST.getlist('categories')
-        print(categories)
-        return render(request, 'charity/form_step2.html', categories)
+        request.session['categories'] = categories
+        return redirect('charity:add_donation_step2')
+
+
+class AddDonationStep2View(View):
+    def get(self, request):
+        return render(request, 'charity/form_step2.html')
+
+    def post(self, request):
+        bags = request.POST.get('bags')
+        request.session['bags'] = bags
+        return redirect('charity:add_donation')
 
 
 

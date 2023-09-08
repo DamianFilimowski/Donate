@@ -1,7 +1,7 @@
 {% extends 'charity/form.html' %}
 {% load static %}
 {% block form %}
-    <div data-step="2">
+    <div data-step="2" class="active">
             <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
             <div class="form-group form-group--inline">
@@ -12,8 +12,14 @@
             </div>
 
             <div class="form-group form-group--buttons">
-              <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="button" class="btn next-step">Dalej</button>
+              <button onclick="{% url 'charity:add_donation' %}" class="btn prev-step">Wstecz</button>
+              <button type="submit" class="btn next-step">Dalej</button>
             </div>
           </div>
+    <script>
+    window.onload = function() {
+        window.location.href = '#form-steps';
+    };
+</script>
+
 {% endblock %}
