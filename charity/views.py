@@ -81,9 +81,34 @@ class AddDonationStep4View(View):
         request.session['phone'] = phone
         more_info = request.POST.get('more_info')
         request.session['more_info'] = more_info
-        return redirect('charity:add_donation')
+        return redirect('charity:add_donation_step5')
 
 
+def session_data(request):
+    address = request.session.get('address')
+    city = request.session.get('city')
+    postcode = request.session.get('postcode')
+    data = request.session.get('data')
+    time = request.session.get('time')
+    phone = request.session.get('phone')
+    more_info = request.session.get('more_info')
+    foundation = request.session.get('foundation')
+    bags = request.session.get('bags')
+    categories = request.session.get('categories')
+    return address, city, postcode, data, time, phone, more_info, foundation, bags, categories
+
+
+class AddDonationStep5View(View):
+    def get(self, request):
+        address, city, postcode, data, time, phone, more_info, foundation, bags, categories = session_data(request)
+        context = {'address': address, 'city': city, 'postcode': postcode, 'data': data, 'time': time, 'phone': phone,
+                   'more_info': more_info, 'foundation': foundation, 'bags': bags, 'categories': categories}
+        return render(request, 'charity/form_step5.html', context)
+
+    def post(self, request):
+        if request.POST.get('return') == 'yes':
+            return redirect('charity:add_donation_step4')
+        return redirect('charity:confirmation')
 
 class ConfirmationView(View):
     def get(self, request):

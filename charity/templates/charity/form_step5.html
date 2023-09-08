@@ -1,7 +1,7 @@
 {% extends 'charity/form.html' %}
 {% load static %}
 {% block form %}
-     <div data-step="5">
+     <div data-step="5" class="active">
             <h3>Podsumowanie Twojej darowizny</h3>
 
             <div class="summary">
@@ -11,14 +11,16 @@
                   <li>
                     <span class="icon icon-bag"></span>
                     <span class="summary--text"
-                      >4 worki ubrań w dobrym stanie dla dzieci</span
+                      >{{ bags }} worki ({% for category in categories %}
+                        {{ category }}{% if not forloop.last %}, {% endif %}
+                      {% endfor %})</span
                     >
                   </li>
 
                   <li>
                     <span class="icon icon-hand"></span>
                     <span class="summary--text"
-                      >Dla fundacji "Mam marzenie" w Warszawie</span
+                      >Dla "{{ foundation }}"</span
                     >
                   </li>
                 </ul>
@@ -28,26 +30,26 @@
                 <div class="form-section--column">
                   <h4>Adres odbioru:</h4>
                   <ul>
-                    <li>Prosta 51</li>
-                    <li>Warszawa</li>
-                    <li>99-098</li>
-                    <li>123 456 789</li>
+                    <li>{{ address }}</li>
+                    <li>{{ city }}</li>
+                    <li>{{ postcode }}</li>
+                    <li>{{ phone }}</li>
                   </ul>
                 </div>
 
                 <div class="form-section--column">
                   <h4>Termin odbioru:</h4>
                   <ul>
-                    <li>13/12/2018</li>
-                    <li>15:40</li>
-                    <li>Brak uwag</li>
+                    <li>{{ data }}</li>
+                    <li>{{ time }}</li>
+                    <li>Uwagi: {{ more_info }}/li>
                   </ul>
                 </div>
               </div>
             </div>
 
             <div class="form-group form-group--buttons">
-              <button type="button" ame='return' value="yes" class="btn prev-step">Wstecz</button>
+              <button name='return' value="yes" class="btn prev-step">Wstecz</button>
               <button type="submit" class="btn">Potwierdzam</button>
             </div>
           </div>
