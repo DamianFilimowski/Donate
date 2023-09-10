@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -45,3 +46,9 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('LandingPage')
+
+
+class ProfileView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        return render(request, 'accounts/profile.html')

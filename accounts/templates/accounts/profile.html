@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+  <body>
+    <header>
+      {% include 'navbar.html' %}
+    </header>
+
+    <section class="login-page">
+        <h2>PROFIL</h2>
+      <h1>Imie: {{ user.first_name }}</h1>
+        <h1>Nazwisko: {{ user.last_name }}</h1>
+        <h1>Email: {{ user.email }}</h1>
+
+    </section>
+  {% endblock %}
