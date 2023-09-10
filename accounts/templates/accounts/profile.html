@@ -11,6 +11,20 @@
       <h1>Imie: {{ user.first_name }}</h1>
         <h1>Nazwisko: {{ user.last_name }}</h1>
         <h1>Email: {{ user.email }}</h1>
+        {% if donations %}
+            <p style="font-size: 18px;"> Lista darów:</p>
+        <ul>
+        {% for donation in donations %}
+            <li style="font-size: 18px;">{{ donation.bags }} worków dla {{ donation.institution.name }}
+            ({% for category in donation.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %})
+            </li>
+            <ul><li style="font-size: 18px;">
+                Odbiór: {{ donation.pick_up_date }} o godzinie {{ donation.pick_up_time }}
+            </li></ul>
 
+        {% endfor %}
+
+        </ul>
+        {% endif %}
     </section>
   {% endblock %}

@@ -5,6 +5,7 @@ from django.views import View
 
 from accounts.forms import AddUserModelForm
 from accounts.models import CustomUser
+from charity.models import Donation
 
 
 # Create your views here.
@@ -51,4 +52,5 @@ class LogoutView(View):
 class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
-        return render(request, 'accounts/profile.html')
+        donations = Donation.objects.filter(user=request.user)
+        return render(request, 'accounts/profile.html', {'donations': donations})
