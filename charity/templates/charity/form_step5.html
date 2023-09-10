@@ -12,7 +12,7 @@
                     <span class="icon icon-bag"></span>
                     <span class="summary--text"
                       >{{ bags }} worki ({% for category in categories %}
-                        {{ category }}{% if not forloop.last %}, {% endif %}
+                        {{ category.name }}{% if not forloop.last %}, {% endif %}
                       {% endfor %})</span
                     >
                   </li>
@@ -20,7 +20,7 @@
                   <li>
                     <span class="icon icon-hand"></span>
                     <span class="summary--text"
-                      >Dla "{{ foundation }}"</span
+                      >Dla "{{ foundation.name }}"</span
                     >
                   </li>
                 </ul>

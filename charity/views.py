@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.views import View
 
 from charity.models import *
-from charity.utils import filter_foundations
+from charity.utils import *
 
 
 # Create your views here.
@@ -19,7 +20,7 @@ class LandingPageView(View):
         return render(request, 'index.html', context)
 
 
-class AddDonationStep1View(View):
+class AddDonationStep1View(LoginRequiredMixin, View):
     def get(self, request):
         categories = Category.objects.all()
         return render(request, 'charity/form_step1.html', {'categories': categories})
@@ -30,7 +31,7 @@ class AddDonationStep1View(View):
         return redirect('charity:add_donation_step2')
 
 
-class AddDonationStep2View(View):
+class AddDonationStep2View(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'charity/form_step2.html')
 
@@ -42,7 +43,7 @@ class AddDonationStep2View(View):
         return redirect('charity:add_donation_step3')
 
 
-class AddDonationStep3View(View):
+class AddDonationStep3View(LoginRequiredMixin, View):
     def get(self, request):
         categories = request.session.get('categories')
         foundations = filter_foundations(categories)
@@ -60,7 +61,7 @@ class AddDonationStep3View(View):
         return redirect('charity:add_donation_step4')
 
 
-class AddDonationStep4View(View):
+class AddDonationStep4View(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'charity/form_step4.html')
 
@@ -84,23 +85,10 @@ class AddDonationStep4View(View):
         return redirect('charity:add_donation_step5')
 
 
-def session_data(request):
-    address = request.session.get('address')
-    city = request.session.get('city')
-    postcode = request.session.get('postcode')
-    data = request.session.get('data')
-    time = request.session.get('time')
-    phone = request.session.get('phone')
-    more_info = request.session.get('more_info')
-    foundation = request.session.get('foundation')
-    bags = request.session.get('bags')
-    categories = request.session.get('categories')
-    return address, city, postcode, data, time, phone, more_info, foundation, bags, categories
-
-
-class AddDonationStep5View(View):
+class AddDonationStep5View(LoginRequiredMixin, View):
     def get(self, request):
         address, city, postcode, data, time, phone, more_info, foundation, bags, categories = session_data(request)
+        print(foundation)
         context = {'address': address, 'city': city, 'postcode': postcode, 'data': data, 'time': time, 'phone': phone,
                    'more_info': more_info, 'foundation': foundation, 'bags': bags, 'categories': categories}
         return render(request, 'charity/form_step5.html', context)
@@ -108,12 +96,15 @@ class AddDonationStep5View(View):
     def post(self, request):
         if request.POST.get('return') == 'yes':
             return redirect('charity:add_donation_step4')
+        address, city, postcode, data, time, phone, more_info, foundation, bags, categories = session_data(request)
+        donation = Donation.objects.create(address=address, city=city, zip_code=postcode, pick_up_date=data,
+                                           pick_up_time=time, phone_number=phone, pick_up_comment=more_info,
+                                           institution=foundation, quantity=bags, user=request.user)
+        for category in categories:
+            donation.categories.add(category)
         return redirect('charity:confirmation')
+
 
 class ConfirmationView(View):
     def get(self, request):
         return render(request, 'charity/form-confirmation.html')
-
-
-
-
