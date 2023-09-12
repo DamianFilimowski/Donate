@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.utils import timezone
 
 from charity.models import *
 from charity.utils import *
@@ -108,3 +109,13 @@ class AddDonationStep5View(LoginRequiredMixin, View):
 class ConfirmationView(View):
     def get(self, request):
         return render(request, 'charity/form-confirmation.html')
+
+
+class DonationTakenView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        donation = get_object_or_404(Donation, pk=pk)
+        donation.taken_time = timezone.now().time()
+        donation.taken_date = timezone.now().date()
+        donation.is_taken = True
+        donation.save()
+        return redirect('accounts:profile')

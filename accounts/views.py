@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.utils import timezone
 
 from accounts.forms import AddUserModelForm
 from accounts.models import CustomUser
@@ -52,5 +53,10 @@ class LogoutView(View):
 class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
-        donations = Donation.objects.filter(user=request.user)
-        return render(request, 'accounts/profile.html', {'donations': donations})
+        donations = Donation.objects.filter(user=request.user, is_taken=False).order_by('-pick_up_date')
+        donations_taken = Donation.objects.filter(user=request.user, is_taken=True).order_by('-pick_up_date')
+        print(donations_taken)
+        return render(request, 'accounts/profile.html', {'donations': donations,
+                                                         'donations_taken': donations_taken})
+
+

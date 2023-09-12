@@ -11,7 +11,7 @@
       <h1>Imie: {{ user.first_name }}</h1>
         <h1>Nazwisko: {{ user.last_name }}</h1>
         <h1>Email: {{ user.email }}</h1>
-        {% if donations %}
+        {% if donations or donations_taken %}
             <p style="font-size: 18px;"> Lista darów:</p>
         <ul>
         {% for donation in donations %}
@@ -19,7 +19,17 @@
             ({% for category in donation.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %})
             </li>
             <ul><li style="font-size: 18px;">
-                Odbiór: {{ donation.pick_up_date }} o godzinie {{ donation.pick_up_time }}
+                Odbiór: {{ donation.pick_up_date }} o godzinie {{ donation.pick_up_time }} -
+                <a href="{% url 'charity:donation_taken' donation.id %}" class="btn btn--small btn--without-border active">Oznacz jako odebraną</a>
+            </li></ul>
+
+        {% endfor %}
+                {% for donation in donations_taken %}
+            <li style="font-size: 18px; ; color: darkgreen;">{{ donation.bags }} worków dla {{ donation.institution.name }}
+            ({% for category in donation.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %})
+            </li>
+            <ul><li style="font-size: 18px; ; color: darkgreen;">
+                Odedbrano: {{ donation.taken_date }} o godzinie {{ donation.taken_time }}
             </li></ul>
 
         {% endfor %}
