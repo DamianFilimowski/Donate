@@ -13,6 +13,9 @@
         <h1>Odebrany: {% if donation.is_taken %}Tak{% else %}Nie{% endif %} </h1>
         <h1>Data Odbioru: {% if donation.is_taken %}{{ donation.taken_date }}
         {% else %}{{ donation.pick_up_date }}{% endif %}</h1>
+        <h1>{% if user == donation.user and not donation.is_taken %}
+            <a href="{% url 'charity:donation_taken' donation.id %}" class="btn btn--small btn--without-border active">
+                Oznacz jako odebraną</a>{% endif %}</h1>
 
     </section>
   {% endblock %}

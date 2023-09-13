@@ -7,7 +7,8 @@
     </header>
 
     <section class="login-page">
-        <h2>PROFIL</h2>
+        <h2>{% if message_list %}{% for message in message_list %}{{ message }}{% endfor %}
+      {% else %}PROFIL{% endif %}</h2>
       <h1>Imie: {{ user.first_name }}</h1>
         <h1>Nazwisko: {{ user.last_name }}</h1>
         <h1>Email: {{ user.email }}</h1>

@@ -31,3 +31,17 @@ class AddUserModelForm(forms.ModelForm):
         if cleaned_data.get('password1') != cleaned_data.get('password2'):
             raise ValidationError('hasła nie są takie same')
         return cleaned_data
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput, label='Stare Hasło')
+    new_password = forms.CharField(widget=forms.PasswordInput, label='Nowe Hasło')
+    new_password_confirm = forms.CharField(widget=forms.PasswordInput, label='Powtórz Hasło')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('password1') != cleaned_data.get('password2'):
+            raise ValidationError('hasła nie są takie same')
+        return cleaned_data
+
+
