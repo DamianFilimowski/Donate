@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from charity.models import *
 from charity.utils import *
@@ -17,7 +18,7 @@ class LandingPageView(View):
         foundations = Institution.objects.filter(type=1)
         ngos = Institution.objects.filter(type=2)
         locals = Institution.objects.filter(type=3)
-        context = {'bags_quantity': bags_quantity, 'foundations': foundations, 'ngos': ngos, 'locals': locals }
+        context = {'bags_quantity': bags_quantity, 'foundations': foundations, 'ngos': ngos, 'locals': locals}
         return render(request, 'index.html', context)
 
 
@@ -119,3 +120,9 @@ class DonationTakenView(LoginRequiredMixin, View):
         donation.is_taken = True
         donation.save()
         return redirect('accounts:profile')
+
+
+class DonationDetailView(DetailView):
+    model = Donation
+    template_name = 'charity/donation_detail.html'
+

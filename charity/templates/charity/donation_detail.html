@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+  <body>
+    <header>
+      {% include 'navbar.html' %}
+    </header>
+
+    <section class="login-page">
+        <h2>Dar dla "{{ donation.institution.name }}"</h2>
+      <h1>Od: {{ donation.user.first_name }} {{ donation.user.last_name  }}</h1>
+        <h1>Ilość worków: {{ donation.quantity }}</h1>
+        <h1>Odebrany: {% if donation.is_taken %}Tak{% else %}Nie{% endif %} </h1>
+        <h1>Data Odbioru: {% if donation.is_taken %}{{ donation.taken_date }}
+        {% else %}{{ donation.pick_up_date }}{% endif %}</h1>
+
+    </section>
+  {% endblock %}
